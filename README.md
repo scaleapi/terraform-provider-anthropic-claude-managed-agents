@@ -116,7 +116,7 @@ The provider reads credentials from, in order of precedence:
 2. The `ANTHROPIC_AUTH_TOKEN` environment variable: an OAuth or federated access token, sent as `Authorization: Bearer`.
 3. The `ANTHROPIC_API_KEY` environment variable, sent as `x-api-key`.
 
-`api_key` is marked `Sensitive` in the schema, so it is redacted from plan/apply output. Provider configuration is **not** written to Terraform state, so the key never lands in the state file regardless of how you supply it. The risk of hardcoding it in the `provider` block is that it then lives in your configuration files (and version control), and can surface in `TF_LOG` debug or crash logs — so prefer the `ANTHROPIC_API_KEY` environment variable in production and CI.
+Both `api_key` and `auth_token` are marked `Sensitive` in the schema, so they are redacted from plan/apply output. Provider configuration is **not** written to Terraform state, so the credential never lands in the state file regardless of how you supply it. The risk of hardcoding it in the `provider` block is that it then lives in your configuration files (and version control), and can surface in `TF_LOG` debug or crash logs — so prefer the `ANTHROPIC_AUTH_TOKEN` or `ANTHROPIC_API_KEY` environment variable in production and CI.
 
 `claude-managed-agents_vault_credential` uses Terraform 1.11 write-only attributes for its secret fields (`token`, `access_token`, `refresh_token`, `client_secret`): these values are never persisted to state. Rotate by incrementing the matching `*_wo_version` integer.
 
